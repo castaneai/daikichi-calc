@@ -1,0 +1,14 @@
+{
+  "name": "daikichi",
+  "version": "0.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "git://github.com/angular/bower-angular.git#~1.2.0-rc.2"
+  }
+}

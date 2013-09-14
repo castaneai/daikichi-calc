@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+  <meta charset="utf-8" />
+  <title>大吉支払いシミュレータ</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      margin-top: 100px;
+    }
+    .total-price {
+      position : fixed;
+      top: 0;
+      height : 100px;
+    }
+  </style>
+</head>
+<body ng-controller="MainCtrl">
+
+<div class="total-price">合計：\{{ totalPrice | number }}</div>
+
+<div class="group" ng-repeat="group in groups">
+  <h2>{{ group.name }}</h2>
+  <ul>
+    <li ng-repeat="order in group.orders">
+      <span class="button-minus" ng-click="minus(order)">－</span>
+      <span class="order-name">\{{ order.price | number }} {{ order.name }}</span>
+      <span class="order-count">{{ order.count }}</span>
+      <span class="button-plus" ng-click="plus(order)">＋</span>
+    </li>
+  </ul>
+</div>
+
+<script src="bower_components/angular/angular.min.js"></script>
+<script>
+  function MainCtrl($scope) {
+    $scope.groups = [
+      {name: '串物', orders: [
+        {name:'はさみ', price:120, count:0}
+      ]}
+    ];
+
+    $scope.calculate = function() {
+
+    }
+  }
+</script>
+</body>
+</html>
