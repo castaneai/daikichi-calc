@@ -1,52 +1,175 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="app">
 <head>
   <meta charset="utf-8" />
   <title>大吉支払いシミュレータ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      margin-top: 100px;
-    }
-    .total-price {
-      position : fixed;
-      top: 0;
-      height : 100px;
-    }
+      * {
+          margin: 0;
+          padding: 0;
+      }
+      body {
+          background: #efefef;
+          margin-top: 60px;
+      }
+      .total-price {
+          font-size: 20px;
+          width: 100%;
+          background: black;
+          color: white;
+          position : fixed;
+          top: 0;
+          padding: 20px;
+          height: 60px;
+          box-sizing: border-box;
+      }
+      .group h2 {
+          background: #555;
+          color: #efefef;
+          font-size: large;
+          padding: 0.5em;
+      }
+
+      .order {
+          font-size: 24px;
+          padding: 5px;
+      }
+
+      .order:nth-child(odd) {
+          background: #cecece;
+      }
+
+      .button-plus,
+      .button-minus {
+          width: 1.2em;
+          font-size: 40px;
+          cursor: pointer;
+          margin-right: 5px;
+          text-align: center;
+          display: inline-block;
+          background: black;
+          color: white;
+          border: none;
+      }
+
   </style>
 </head>
 <body ng-controller="MainCtrl">
 
-<div class="total-price">合計：\{{ totalPrice | number }}</div>
+    <div class="total-price">
+        合計：￥{{ total | number }}
+    </div>
 
 <div class="group" ng-repeat="group in groups">
-  <h2>{{ group.name }}</h2>
+  <h2>▼{{ group.name }}</h2>
   <ul>
-    <li ng-repeat="order in group.orders">
-      <span class="button-minus" ng-click="minus(order)">－</span>
-      <span class="order-name">\{{ order.price | number }} {{ order.name }}</span>
-      <span class="order-count">{{ order.count }}</span>
-      <span class="button-plus" ng-click="plus(order)">＋</span>
+    <li class="order" ng-repeat="order in group.orders">
+      <button class="button-plus" ng-click="plus(order)">＋</button>
+      <button class="button-minus" ng-click="minus(order)">－</button>
+      <span class="order-name">{{ order.name }}</span>
+      <span class="order-count">x{{ order.count }}</span>
     </li>
   </ul>
 </div>
 
+<script src="bower_components/fastclick/lib/fastclick.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script>
-  function MainCtrl($scope) {
-    $scope.groups = [
-      {name: '串物', orders: [
-        {name:'はさみ', price:120, count:0}
-      ]}
-    ];
+    var app = angular.module('app', []).run(function() {
+        FastClick.attach(document.body);
+    });
+    app.controller('MainCtrl', function($scope) {
+        $scope.total = 0;
 
-    $scope.calculate = function() {
+        var basic = {
+            name: '基本',
+            orders: [
+                {name: 'お通し', price: 200, count:0},
+                {name: '生ビール', price: 470, count: 0}
+            ]
+        };
 
-    }
-  }
+        var kushimono = {
+            name: '串物',
+            orders: [
+                {name:'はさみ', price:120, count:0},
+                {name:'かわ', price:100, count:0},
+                {name:'かわたれ', price:100, count:0},
+                {name:'つくね', price:140, count:0},
+                {name:'きも', price:80, count:0},
+                {name:'ずり', price:100, count:0},
+                {name:'こころ', price:120, count:0},
+                {name:'ねっく', price:120, count:0},
+                {name:'み', price:120, count:0},
+                {name:'なんこつ', price:120, count:0},
+                {name:'ヒップ', price:120, count:0},
+                {name:'豚バラ', price:120, count:0},
+                {name:'元気焼き', price:120, count:0},
+                {name:'しそ巻', price:140, count:0},
+                {name:'チキンバジル', price:140, count:0},
+                {name:'バジトン', price:140, count:0},
+                {name:'ねぎバンバン', price:140, count:0},
+                {name:'チキンチーズ', price: 140, count:0},
+                {name:'ゆず胡椒焼', price: 140, count:0},
+                {name:'チキントマト', price: 140, count:0}
+            ]
+        };
+
+        var gohan = {
+            name: 'ご飯',
+            orders: [
+                {name:'焼きおにぎり', price: 200, count:0},
+                {name:'焼きおにチーズ', price: 250, count:0},
+                {name:'焼きおにｲﾀﾘｱﾝ', price: 250, count:0},
+                {name:'おこげスープ', price: 350, count:0},
+                {name:'大吉丼', price: 480, count:0},
+                {name:'小吉丼', price: 350, count:0},
+                {name:'豚バラ丼', price: 480, count:0},
+                {name:'とり玉丼', price: 480, count:0}
+            ]
+        };
+
+        var drink = {
+            name: '飲み物',
+            orders: [
+                {name:'生ビール', price: 470, count:0},
+                {name:'瓶ビール', price: 470, count:0},
+                {name:'タコハイ', price: 350, count:0},
+                {name:'ウーロンハイ', price: 350, count:0},
+                {name:'緑茶ハイ', price: 350, count:0},
+                {name:'焼酎', price: 350, count:0},
+                {name:'それから(ﾎﾞﾄﾙ)', price: 980, count:0},
+                {name:'ハイボール', price: 350, count:0},
+                {name:'仕込水割り', price: 680, count:0},
+                {name:'カシス', price:400,count:0},
+                {name:'生酒(日本酒)', price: 350, count: 0}
+            ]
+        };
+
+        $scope.groups = [basic, kushimono, gohan, drink];
+
+        $scope.plus = function(order) {
+            order.count++;
+            $scope.total += order.price;
+        }
+
+        $scope.minus = function(order) {
+            if (order.count > 0) {
+                order.count--;
+                $scope.total -= order.price;
+            }
+        }
+
+        $scope.calculate = function() {
+            $scope.total = 0;
+            $scope.groups.forEach(function(group) {
+                group.orders.forEach(function(order) {
+                    $scope.total += order.count * order.price;
+                });
+            });
+        }
+    });
 </script>
 </body>
 </html>
